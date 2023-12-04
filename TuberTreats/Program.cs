@@ -1,8 +1,7 @@
 using TuberTreats.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Add services to the container.----------------------------------------------------------------------------------
 List<Customer> customers = new List<Customer>
 {
     new Customer
@@ -207,10 +206,9 @@ List<TuberTopping> tuberToppings = new List<TuberTopping>
     new TuberTopping { Id = 9, TuberOrderId = 1003, ToppingId = 9 }, // Caramelized Onions
 };
 
-
+// ----------------------------------------------------------------------------------------------------------------
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -227,14 +225,14 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
-//add endpoints here
+//add endpoints here---------------------------------------------------------------------------------------------------
 
 
 
 
 
 
-
+// ----------------------------------------------------------------------------------------------------------------------
 app.Run();
 //don't touch or move this!
 public partial class Program { }
