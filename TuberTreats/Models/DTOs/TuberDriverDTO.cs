@@ -2,9 +2,9 @@
 
 using TuberTreats.Models;
 
-public class TuberDriver 
+public class TuberDriverDTO
 {
-    public int id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
-    public List<TuberOrder> Deliveries { get; set; }
+    public List<TuberOrder> TuberDeliveries { get; set; }
 }

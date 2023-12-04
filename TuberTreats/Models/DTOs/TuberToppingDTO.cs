@@ -1,6 +1,6 @@
 
 
-public class TuberTopping 
+public class TuberToppingDTO
 {
     public int Id { get; set; }
     public int TuberOrderId { get; set; }
