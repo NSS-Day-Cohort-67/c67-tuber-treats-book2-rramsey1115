@@ -180,7 +180,7 @@ app.MapGet("/tuberorders/{id}", (int id) =>
             Name = orderDriver.Name,
         },
         DeliveredOnDate = order.DeliveredOnDate,
-        Toppings = orderToppings.Select(ot => new ToppingDTO
+        Toppings = orderToppings.Count == 0 ? null : orderToppings.Select(ot => new ToppingDTO
         {
             Id = ot.Id,
             Name = ot.Name
@@ -511,7 +511,6 @@ app.MapGet("/tuberdrivers/{id}", (int id) => {
 
 
 });
-
 
 // ----------------------------------------------------------------------------------------------------------------------
 app.Run();
