@@ -1,5 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
-using Microsoft.AspNetCore.Localization;
 using TuberTreats.Models;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -449,9 +447,70 @@ app.MapGet("/tuberdrivers", () =>
 });
 
 // get an employee by id, WITH their deliveries
+app.MapGet("/tuberdrivers/{id}", (int id) => {
+    // find tuberDriver based on id passed in
+    TuberDriver selectedDriver = tuberDrivers.FirstOrDefault(tb => tb.Id == id);
+    if (selectedDriver == null) 
+    {
+        return Results.NotFound();
+    }
+
+    // find deliveries related to selectedDriver
+    List<TuberOrder> driverOrders = tuberOrders.Where(to => to.TuberDriverId == selectedDriver.Id).ToList();
+
+    // start return of driver for client
+    return Results.Ok(new TuberDriverDTO
+    {
+        Id = selectedDriver.Id,
+        Name = selectedDriver.Name,
+        TuberDeliveries = driverOrders.Select(order => {
+            // find customer
+            Customer foundCustomer = customers.FirstOrDefault(c => c.Id == order.CustomerId);
+
+            // find toppings
+            List<TuberTopping> toppingsRes = tuberToppings.Where(tt => tt.TuberOrderId == order.Id).ToList();
+            List<Topping> orderToppings = new List<Topping>();
+
+            foreach (TuberTopping tRes in toppingsRes)
+            {
+                foreach (Topping topping in bakedPotatoToppings)
+                {
+                    if (tRes.ToppingId == topping.Id)
+                    {
+                        orderToppings.Add(topping);
+                    }
+                }
+            }
+
+            return new TuberOrderDTO()
+            {
+            Id = order.Id,
+            OrderPlacedOnDate = order.OrderPlacedOnDate,
+            CustomerId = order.CustomerId,
+            Customer = new CustomerDTO
+                {
+                    Id = foundCustomer.Id,
+                    Name = foundCustomer.Name,
+                    Address = foundCustomer.Address,
+                },
+            TuberDriverId = order.TuberDriverId,
+            TuberDriver = new TuberDriverDTO
+                {
+                    Id = selectedDriver.Id,
+                    Name = selectedDriver.Name
+                },
+            DeliveredOnDate = order.DeliveredOnDate,
+            Toppings = orderToppings.Select(ot => new ToppingDTO
+                {
+                    Id = ot.Id,
+                    Name = ot.Name
+                }).ToList()
+            };
+        }).ToList()
+    });
 
 
-
+});
 
 
 // ----------------------------------------------------------------------------------------------------------------------
